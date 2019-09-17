@@ -3,13 +3,13 @@ parameters:
   solution_to_build: ''
 
 jobs:
-- template: templates/build.and.release.yml
+- template: build.and.release.yml
   parameters:
     vmImage: ${{ parameters.vmImage }}
     service_connection_nuget_org: ${{ parameters.service_connection_nuget_org }}
     service_connection_github: ${{ parameters.service_connection_github }}
     solution_to_build: ${{ parameters.solution_to_build }}
     postTestSteps:
-    - template: templates/benchmark.yml
+    - template: benchmark.yml
       parameters:
         benchmarkProjectName: 'Ais.Net.Benchmarks'
