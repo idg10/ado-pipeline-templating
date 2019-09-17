@@ -8,7 +8,7 @@ trigger:
     - '*'
 
 jobs:
-- template: templates/build.and.release.yml@recommended_practices
+- template: templates/build.test.and.benchmark.yml
   parameters:
     vmImage: 'ubuntu-latest'
     solution_to_build: $(Endjin_Solution_To_Build)
