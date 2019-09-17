@@ -1,0 +1,14 @@
+trigger:
+  branches:
+    include:
+    - master
+    - feature/*
+  tags:
+    include:
+    - '*'
+
+jobs:
+- template: templates/build.and.release.yml@recommended_practices
+  parameters:
+    vmImage: 'ubuntu-latest'
+    solution_to_build: $(Endjin_Solution_To_Build)
