@@ -3,14 +3,11 @@ parameters:
   benchmarkProjectFolder: ''
   benchmarkProjectPath: ''
 
-variables:
-  BenchmarkProjectName: ${{ parameters.benchmarkProjectName }}
-  BenchmarkProjectFolder: ${{ coalesce(parameters.benchmarkProjectFolder, format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName)) }}
-  BenchmarkProjectPath: ${{ coalesce(parameters.benchmarkProjectPath, format('{0}/{1}.csproj', parameters.benchmarkProjectFolder, parameters.benchmarkProjectName)) }}
-
-
 steps:
   - task: DotNetCoreCLI@2
+    variables:
+      BenchmarkProjectFolder: ${{ coalesce(parameters.benchmarkProjectFolder, format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName)) }}
+      BenchmarkProjectPath: ${{ coalesce(parameters.benchmarkProjectPath, format('{0}/{1}.csproj', parameters.benchmarkProjectFolder, parameters.benchmarkProjectName)) }}
     displayName: 'Run benchmarks'
     inputs:
       command: 'run'
@@ -21,6 +18,8 @@ steps:
       workingDirectory: $(BenchmarkProjectFolder)
 
   - task: PublishBuildArtifacts@1
+    variables:
+      BenchmarkProjectFolder: ${{ coalesce(parameters.benchmarkProjectFolder, format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName)) }}
     displayName: 'Publish Artifact: benchmark'
     inputs:
       artifactName: 'benchmark'
