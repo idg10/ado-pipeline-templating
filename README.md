@@ -5,7 +5,8 @@ Experiments with reuse in Azure DevOps (ADO) pipeline templating.
 ## Background
 
 [endjin.com](https://endjin.com) defines various reusable ADO pipeline templates at https://github.com/endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
-This repo contains experiments to see which techniques for reuse work, and which do not.
+
+The repo contains experiments that I'd like to perform without messing up any of those shared templates. This lets me discover which techniques for reuse work, and which do not, prior to making updates to that shared repo.
 
 ## Experiment: nesting step templates
 
