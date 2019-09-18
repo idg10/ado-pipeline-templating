@@ -12,3 +12,4 @@ jobs:
   parameters:
     vmImage: 'ubuntu-latest'
     solution_to_build: $(Endjin_Solution_To_Build)
+    benchmarkProjectName: 'TestBenchmark.Lib'

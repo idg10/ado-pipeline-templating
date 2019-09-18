@@ -1,6 +1,7 @@
 parameters:
   vmImage: ''
   solution_to_build: ''
+  benchmarkProjectName: ''
 
 jobs:
 - template: build.and.test.yaml
@@ -12,4 +13,4 @@ jobs:
     postTestSteps:
     - template: benchmark.yaml
       parameters:
-        benchmarkProjectName: 'Ais.Net.Benchmarks'
+        benchmarkProjectName: ${{ parameters.benchmarkProjectName }}
