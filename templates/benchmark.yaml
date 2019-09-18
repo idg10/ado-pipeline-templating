@@ -1,7 +1,13 @@
 parameters:
   benchmarkProjectName: ''
-  benchmarkProjectFolder: ${{ format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName) }}
-  benchmarkProjectPath: ${{ format('{0}/{1}.csproj', parameters.benchmarkProjectFolder, parameters.benchmarkProjectName) }}
+  benchmarkProjectFolder: ''
+  benchmarkProjectPath: ''
+
+variables:
+  BenchmarkProjectName: ${{ parameters.benchmarkProjectName }}
+  BenchmarkProjectFolder: ${{ coalesce(parameters.benchmarkProjectFolder, format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName)) }}
+  BenchmarkProjectPath: ${{ coalesce(parameters.benchmarkProjectPath, format('{0}/{1}.csproj', parameters.benchmarkProjectFolder, parameters.benchmarkProjectName)) }}
+
 
 steps:
   - task: DotNetCoreCLI@2
@@ -9,13 +15,13 @@ steps:
     inputs:
       command: 'run'
       #projects: $(Build.SourcesDirectory)/Solutions/Ais.Net.Benchmarks/Ais.Net.Benchmarks.csproj
-      projects: ${{ parameters.benchmarkProjectPath }}
+      projects: $(BenchmarkProjectPath))
       arguments: '--configuration Release'
       nobuild: true
-      workingDirectory: ${{ parameters.benchmarkProjectFolder }}
+      workingDirectory: $(BenchmarkProjectFolder)
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: benchmark'
     inputs:
       artifactName: 'benchmark'
-      PathtoPublish: ${{ format('{0}/BenchmarkDotNet.Artifacts/results', parameters.benchmarkProjectFolder) }}
+      PathtoPublish: ${{ format('{0}/BenchmarkDotNet.Artifacts/results', variables.BenchmarkProjectFolder) }}
