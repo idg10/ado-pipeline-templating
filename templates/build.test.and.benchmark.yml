@@ -7,8 +7,6 @@ jobs:
 - template: build.and.test.yaml
   parameters:
     vmImage: ${{ parameters.vmImage }}
-    service_connection_nuget_org: ${{ parameters.service_connection_nuget_org }}
-    service_connection_github: ${{ parameters.service_connection_github }}
     solution_to_build: ${{ parameters.solution_to_build }}
     postTestSteps:
     - template: benchmark.yaml
