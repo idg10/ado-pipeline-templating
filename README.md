@@ -14,7 +14,7 @@ Is it possible for the steps we plug into those extensibility points to come fro
 
 This motivation originated from a requirement to add benchmarking to our build process (with the long term goal being to detect
 performance regressions automatically). We don't want to force this on all projects, and we'd prefer not to have to maintain two versions
-of our shared `build.and.release.yml` template that are identical save for this one step. The obvious way to avoid the problem of
+of our shared `build.and.release.yaml` template that are identical save for this one step. The obvious way to avoid the problem of
 maintaining multiple variations on a single theme is to have one standard build and release template with some placeholders in
 which users of the template can supply optional extra steps.
 
@@ -44,7 +44,7 @@ a single job, but then defers entirely to a template to define the constituent p
 
 ``` yaml
 jobs:
-- template: templates/build.test.and.benchmark.yml
+- template: templates/build.test.and.benchmark.yaml
   parameters:
     vmImage: 'ubuntu-latest'
     solution_to_build: $(Endjin_Solution_To_Build)
@@ -59,7 +59,7 @@ to run as part of this build.
 If you're following closely, you'll have noticed that this does _not_ refer to the `build.and.test.yaml` I showed a snippet from
 earlier. It does use that, but it does so indirectly. And that's because the goal of the exercise here is to see if we can find
 a reusable way to use reusable templates in certain ways. `build.and.test.yaml` is a reusable template that provides a general-purpose
-placeholder for additional build steps; but we're using `build.test.and.benchmark.yml` which is another reusable template that exploits
+placeholder for additional build steps; but we're using `build.test.and.benchmark.yaml` which is another reusable template that exploits
 that placeholder in a particular way, adding in benchmarking support.
 
 But if you look at that template, it just invokes the `build.and.test.yaml` template from earlier, but, critically, the value it supplies
