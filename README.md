@@ -24,7 +24,7 @@ multiple projects.
 
 This is possible, and the templates in this repo show one way to do it.
 
-The reusable template that performs the actual build is [templates/build.and.test.yaml](../blob/master/templates/build.and.test.yaml). This is a very simplified
+The reusable template that performs the actual build is [templates/build.and.test.yaml](../master/templates/build.and.test.yaml). This is a very simplified
 version of the template of the same name up at https://github.com/endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub containing
 just build and test steps and, critically, a placeholder:
 
@@ -39,7 +39,7 @@ one or more templates, ADO gathers them altogether and produces what you could t
 run - what the build definition might have looked like if you weren't using templates. And it's at that point that it expands any
 _template expressions_.
 
-In this repo, the pipeline definition I've supplied to ADO is at [build-pipeline.yaml](../blob/master/build-pipeline.yaml). This defines
+In this repo, the pipeline definition I've supplied to ADO is at [build-pipeline.yaml](../master/build-pipeline.yaml). This defines
 a single job, but then defers entirely to a template to define the constituent parts of that job:
 
 ``` yaml
@@ -52,7 +52,7 @@ jobs:
 ```
 
 When ADO comes to generate the plan for this pipeline, it knows it will have to go and fetch the
-[templates/build.test.and.benchmark.yaml](../blob/master/templates/build.test.and.benchmark.yaml) template. That template requires us to tell it
+[templates/build.test.and.benchmark.yaml](../master/templates/build.test.and.benchmark.yaml) template. That template requires us to tell it
 certain things, such as the location of the solution file, and the name of the project that contains the benchmarks we'd like
 to run as part of this build.
 
@@ -81,5 +81,5 @@ parameter that lets you supply a bunch of extra steps to run at a particular poi
 template? And the answer is: yes!
 
 This means that I can define by `build.test.and.benchmark.yaml` by saying that it's basically the `build.and.test.yaml` template,
-but with another template, [templates/benchmark.yaml](../blob/master/templates/benchmark.yaml), plugged into the placeholder
+but with another template, [templates/benchmark.yaml](../master/templates/benchmark.yaml), plugged into the placeholder
 offered by `build.and.test.yaml`.
