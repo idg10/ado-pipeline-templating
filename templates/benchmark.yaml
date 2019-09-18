@@ -1,7 +1,7 @@
 parameters:
   benchmarkProjectName: ''
-  benchmarkProjectFolder: ${{ format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName }}
-  benchmarkProjectPath: ${{ format('{0}/{1}.csproj', parameters.benchmarkProjectFolder, parameters.benchmarkProjectName }}
+  benchmarkProjectFolder: ${{ format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName) }}
+  benchmarkProjectPath: ${{ format('{0}/{1}.csproj', parameters.benchmarkProjectFolder, parameters.benchmarkProjectName) }}
 
 steps:
   - task: DotNetCoreCLI@2
