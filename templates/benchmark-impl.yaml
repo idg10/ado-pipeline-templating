@@ -9,7 +9,7 @@ steps:
     inputs:
       command: 'run'
       #projects: $(Build.SourcesDirectory)/Solutions/Ais.Net.Benchmarks/Ais.Net.Benchmarks.csproj
-      projects: ${{ benchmarkProjectPath }}
+      projects: ${{ parameters.benchmarkProjectPath }}
       arguments: '--configuration Release'
       nobuild: true
       workingDirectory: ${{ parameters.benchmarkProjectFolder }}
