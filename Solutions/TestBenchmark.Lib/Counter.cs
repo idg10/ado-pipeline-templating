@@ -2,13 +2,13 @@
 
 namespace TestBenchmark.Lib
 {
-    public class Class1
+    public class Counter
     {
         private int count;
 
-        public int Foo()
+        public int Increment()
         {
-            return count++;
+            return ++count;
         }
     }
 }

@@ -12,10 +12,10 @@ namespace TestBenchmark.Benchmark
         [Benchmark]
         public void InvokeOp1000()
         {
-            var x = new Class1();
+            var x = new Counter();
             for (int i = 0; i < 1000; ++i)
             {
-                x.Foo();
+                x.Increment();
             }
         }
     }
