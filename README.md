@@ -83,3 +83,35 @@ template? And the answer is: yes!
 This means that I can define by `build.test.and.benchmark.yaml` by saying that it's basically the `build.and.test.yaml` template,
 but with another template, [templates/benchmark.yaml](../master/templates/benchmark.yaml), plugged into the placeholder
 offered by `build.and.test.yaml`.
+
+## Experiment: calculated default template arguments
+
+In the `benchmark.yaml` template used in the preceding experiment, we want to be able to invoke it with a single parameter, `benchmarkProjectName`, and have it infer the exact project folder and file location from this, but in some situations it may be useful to be able to specify the locations explicitly.
+
+For example, given the project name `TestBenchmark.Benchmark`, the templates presume that the project folder is `Solutions/TestBenchmark.Benchmark` and that this contains a `TestBenchmark.Benchmark.csproj` file. But there may be circumstances in which it's useful to use a different folder structure—the benchmark project might be a subfolder rather than directly inside `Solutions` for example.
+
+To support this, the `benchmark.yaml` defines three arguments: `benchmarkProjectName`, `benchmarkProjectFolder`, and `benchmarkProjectPath`, but if you set just the first one, it calculates values for the second two, enabling us to pass just the `benchmarkProjectName`.
+
+Unfortunately, this is slightly more involved than we might like. Ideally we'd be able to write this sort of thing at the top of the template:
+
+``` yaml
+# Will cause an error - ADO doesn't let you use template expressions as parameter defaults
+parameters:
+  benchmarkProjectName: ${{ parameters.benchmarkProjectName }}
+  benchmarkProjectFolder: ${{ coalesce(parameters.benchmarkProjectFolder, format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName)) }}
+  benchmarkProjectPath: ${{ coalesce(parameters.benchmarkProjectPath, format('{0}/{1}.csproj', coalesce(parameters.benchmarkProjectFolder, format('$(Build.SourcesDirectory)/Solutions/{0}', parameters.benchmarkProjectName)), parameters.benchmarkProjectName)) }}
+```
+
+The `coalesce` function here will use its first parameter unless that's null or an empty string, in which case it will use the next argument. So this will use parameter values if supplied, with calculated fallbacks. Or at least, it would if it worked.
+
+Unfortunately this doesn't work, because ADO doesn't allow you to use template expressions as the default values in a template's `parameters` section. The defaults all have to be constant values.
+
+In a job template, you can define a `variables` section, and since variables _are_ allowed to use template expressions, we can put the expressions we want there, and then refer to the variables elsewhere in the template instead of the parameters. See [templates/build.and.test.yaml](../master/templates/build.and.test.yaml#L11) for an example.
+
+Unfortunately, it seems that you can't declare variables at file scope in a step template. This means there's no way to define a calculated default value for a parameter at file scope. You can declare per-step variables, but that's not much use if you want to use the same value in multiple steps.
+
+To work around this, we split the template into two files. If you look at [templates/benchmark.yaml](../master/templates/benchmark.yaml)
+you'll see that it defines no steps. It just calls out to another template, [templates/benchmark-impl.yaml](../master/templates/benchmark-impl.yaml), that does the real work.
+The only purpose of `benchmark.yaml` is to plug in calculated default values. It does this at the point where it specifies the parameters to `benchmark-impl.yaml`.
+
+This is a rather ungainly hack, but it does work around the apparent limitation. But life would be much simpler if ADO either allowed template expressions for default values for template parameters, or allowed you to define file-scope variables for step templates.
