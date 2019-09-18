@@ -9,7 +9,7 @@ steps:
     inputs:
       command: 'run'
       projects: ${{ parameters.benchmarkProjectPath }}
-      arguments: ${{ format('{0}/BenchmarkDotNet.Artifacts', parameters.benchmarkProjectFolder }}
+      arguments: ${{ format('{0}/BenchmarkDotNet.Artifacts', parameters.benchmarkProjectFolder) }}
       configuration: Release
       nobuild: true
 
